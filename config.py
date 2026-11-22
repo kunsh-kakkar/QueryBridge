@@ -35,7 +35,7 @@ DEFAULT_DATA_DIR: Path = PROJECT_ROOT / "data"
 # The AI provider is Google Gemini (backend/gemini_client.py behind the
 # interface in backend/llm_client.py). It has a free tier.
 LLM_PROVIDER = "gemini"
-DEFAULT_MODEL = "gemini-3.8-flash"
+DEFAULT_MODEL = "gemini-3.5-flash-lite"
 PROVIDER_NAME = "Google Gemini"
 API_KEY_VARIABLE = "GEMINI_API_KEY"
 HARD_MAX_CORRECTION_ATTEMPTS = 3

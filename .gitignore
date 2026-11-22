@@ -30,3 +30,6 @@ evaluation/results/tmp/
 
 # browser walkthrough output
 tests/browser/screenshots/
+
+# Milestone 2 submission working folder (form answers, reel script, copies of the PDFs)
+M2_submission/

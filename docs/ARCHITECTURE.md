@@ -347,7 +347,7 @@ Measured steps: **A→B** adds role + rules + dialect notes + schema context tog
 
 ## 8. Key technical decisions
 
-1. **Official Google Gen AI SDK (`google-genai`).** The model is configurable (`QB_MODEL`, default `gemini-3.8-flash`) and the effort level can be set per stage (`QB_GENERATION_EFFORT`, `QB_VERIFICATION_EFFORT`); it maps to Gemini thinking levels.
+1. **Official Google Gen AI SDK (`google-genai`).** The model is configurable (`QB_MODEL`, default `gemini-3.5-flash-lite`) and the effort level can be set per stage (`QB_GENERATION_EFFORT`, `QB_VERIFICATION_EFFORT`); it maps to Gemini thinking levels.
 2. **Constrained structured outputs.** The Pydantic contract's JSON schema is reduced to the subset Gemini enforces (`$ref` inlined, unsupported keywords dropped; `gemini_schema` in `backend/gemini_client.py`) and sent as `response_json_schema` with `response_mime_type="application/json"`, so the API returns schema-shaped JSON. QueryBridge checks the finish reason first, so a safety block or a truncated response is reported as such and not as a generic JSON error, then validates with Pydantic. Every field is required, and numeric ranges are clamped by validators because the API treats them only as descriptions.
 3. **No `temperature` tuning.** Reproducibility comes from structured outputs, a fixed data seed, a pinned reference date, and optional repeated evaluation runs.
 4. **Refusals and failures are always handled:** the finish reason is checked (safety blocks, `MAX_TOKENS`, blocked prompts); SDK exceptions map to typed, user-friendly errors.

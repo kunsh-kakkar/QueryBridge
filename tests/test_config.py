@@ -14,7 +14,7 @@ from config import HARD_MAX_CORRECTION_ATTEMPTS, PROJECT_ROOT, Settings, parse_d
 
 def test_defaults(make_settings):
     s = make_settings()
-    assert s.model is None and s.effective_model == "gemini-3.8-flash"
+    assert s.model is None and s.effective_model == "gemini-3.5-flash-lite"
     assert s.effective_verifier_model == s.effective_model
     assert s.max_correction_attempts == 2
     assert s.is_demo_database
@@ -90,7 +90,7 @@ def test_gemini_key_is_secret(isolated_env, variable):
 
 
 def test_default_model_and_credentials(make_settings):
-    assert make_settings(model="   ").effective_model == "gemini-3.8-flash"  # blank = default model
+    assert make_settings(model="   ").effective_model == "gemini-3.5-flash-lite"  # blank = default model
     assert make_settings(model="gemini-3.6-flash").effective_verifier_model == "gemini-3.6-flash"
     assert make_settings().has_llm_credentials is False
     assert make_settings(gemini_api_key="AIza-test").has_llm_credentials is True

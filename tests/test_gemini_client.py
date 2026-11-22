@@ -171,7 +171,7 @@ def test_from_settings_and_factory(make_settings):
                              max_output_tokens=8000)
     client = create_llm_client(settings)
     assert isinstance(client, GeminiClient) and client.provider == "gemini"
-    assert client.stage_settings["generation"] == StageSettings("gemini-3.8-flash", "medium", 8000)
+    assert client.stage_settings["generation"] == StageSettings("gemini-3.5-flash-lite", "medium", 8000)
     assert client.stage_settings["verification"] == StageSettings("gemini-3.5-flash-lite", "high", 8000)
     older = GeminiClient.from_settings(make_settings(model="gemini-2.5-flash-lite"))
     assert older.stage_settings["generation"].effort is None

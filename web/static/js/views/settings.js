@@ -16,7 +16,7 @@ const SECTIONS = [
 ];
 
 const FRIENDLY_CONFIGS = {
-  A: ["Basic", "A one-line instruction and the table list. Kept as a baseline to measure how much the other techniques help."],
+  A: ["Basic", "A one-line instruction, with no description of the database. Kept as a baseline to measure how much the other techniques help."],
   B: ["With database knowledge", "Adds an expert role, safety rules, notes on the database type and a description of every relevant table."],
   D: ["With worked examples", "Everything in B plus a few worked question-and-SQL examples picked to match your question."],
   C: ["Full pipeline", "Everything in D plus automatic checks, an AI self-review of each query and up to 2 automatic corrections."],

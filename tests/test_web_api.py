@@ -168,7 +168,7 @@ def test_missing_api_key_is_explained(tmp_path, demo_db_path, make_settings):
         assert variable in response.json()["error"]["message"]
         # The prompt lab previews the exact request without calling the API
         preview = client.post("/api/prompt-preview", json={"question": "Top 5 salaries", "config": "C"}).json()
-        assert preview["request"]["model"] == "gemini-3.8-flash" and preview["request"]["contents"]
+        assert preview["request"]["model"] == "gemini-3.5-flash-lite" and preview["request"]["contents"]
         assert preview["request"]["config"]["thinking_config"] == {"thinking_level": "MEDIUM"}
         assert "$defs" not in json.dumps(preview["output_schema"]["response_json_schema"])
         # SQL tools still work without a key

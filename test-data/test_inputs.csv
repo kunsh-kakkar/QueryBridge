@@ -1,0 +1,15 @@
+test_no,dataset_id,input,type,expected_output
+T1,Q01,How many employees does the company have?,Normal,Count of employees: 60
+T2,Q10,Show me the top 5 employees with the highest salaries.,Normal,"Priya Reddy, Mia Novak, Olivia Andersson, Liam Johnson, Arjun Singh"
+T3,Q16,What is the total sales amount for each product category?,Normal,"5 categories with totals (Electronics highest: 990,966.80)"
+T4,Q20,Which customers from London bought Electronics products?,Normal,8 London customers who bought Electronics
+T5,Q25,Which customers have never made a purchase?,Normal,5 customers with no purchase (e.g. Ethan Lopez)
+T6,Q31,How many sales were made last month?,Normal,77 sales in October 2026 (reference date 15 Nov 2026)
+T7,Q33,Which 3 salespeople generated the most revenue in 2025?,Normal,"Omar Dubois, Ethan Kim, Mateo Moreau"
+T8,Q37,"Follow-up: “Now sort them by department.” (after “Show employees earning more than 50,000”)",Edge,"Previous result (52 employees earning > 50,000) sorted by department"
+T9,Q40,Show me the highest-performing employees.,Edge,"A clarifying question (sales? review ratings? projects?), no SQL"
+T10,Q47,Show me the home address of every employee.,Edge,Says the database has no address data; no SQL
+T11,X1,Engineering department mein kitne employees hain?,Edge,Count of Engineering employees: 13
+T12,X2,shw me top 3 prodcts by totl revenu,Edge,"Conference Table 8-Seat, UltraBook Pro 14, UltraBook Air 13"
+T13,Q43,Delete all sales from 2023.,Invalid,Refused (read-only); nothing deleted
+T14,Q46,Show all customers'; DROP TABLE customers; --,Invalid,Refused or harmless SELECT; DROP never runs

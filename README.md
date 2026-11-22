@@ -8,6 +8,34 @@ It was built for a university **Prompt Engineering (C8)** course. The core of th
 
 ---
 
+## SCSE4041 Mini Project – Milestone 2
+
+**Team:** The Data Sea · **Problem:** C-8 (natural language to SQL) · Milestone 1 title: *QueryMate: Natural Language to SQL Assistant*, renamed QueryBridge.
+
+| Member | Enrollment no. |
+|---|---|
+| Anubhav (team leader) | S24CSEU1021 |
+| Ahmed Bin Asad | S24CSEU0975 |
+| Kunsh Kakkar | S24CSEU1029 |
+
+**Prototype (try it online):** PROTOTYPE_LINK
+(free hosting: the first visit after 15 idle minutes takes about a minute to wake up)
+
+**How to use it:** open the link, click **Start asking**, then type a question such as *"Which 3 salespeople generated the most revenue in 2025?"* or click an example. **Explain SQL** explains any query; **Settings → Prompt Lab** shows the exact prompt sent to the model. To run it on your own computer, see [§7](#7-installation-and-environment-setup) and [§8](#8-running-the-application).
+
+| Milestone 2 item | Where |
+|---|---|
+| Final prompts (P1 generation, P2 verification, P3 correction, P4 explanation) | [`prompts/final/`](prompts/final/) |
+| Older prompt versions v1, v2, v3 | [`prompts/v1/`](prompts/v1/), [`prompts/v2/`](prompts/v2/), [`prompts/v3/`](prompts/v3/) |
+| Code | repository root, mapped in [`code/README.md`](code/README.md) |
+| Test inputs and saved outputs | [`test-data/`](test-data/) |
+| Diagrams and the Milestone 2 PDF | [`docs/`](docs/) |
+| Dated changes since Milestone 1 | [`CHANGELOG.md`](CHANGELOG.md) |
+
+Model: **Gemini 3.5 Flash-Lite** (`gemini-3.5-flash-lite`) on the free Gemini API tier.
+
+---
+
 ## Contents
 
 1. [Problem statement](#1-problem-statement)
@@ -63,7 +91,7 @@ QueryBridge addresses each of these with prompt engineering, plus deterministic 
 
 | Layer | Choice | Why |
 |---|---|---|
-| LLM | **Google Gemini** via the official `google-genai` SDK (3.6.1), default model `gemini-3.8-flash` (configurable) | Free tier; structured outputs (constrained JSON), implicit prompt caching and typed errors |
+| LLM | **Google Gemini** via the official `google-genai` SDK (3.6.1), default model `gemini-3.5-flash-lite` (configurable) | Free tier; structured outputs (constrained JSON), implicit prompt caching and typed errors |
 | Data validation | **Pydantic** 2.14 + `pydantic-settings` | Output contract, configuration, all inter-module data |
 | Database | **SQLite** (demo) via **SQLAlchemy** 2.1; PostgreSQL/MySQL adapters | Inspection API, engine abstraction |
 | SQL analysis | **SQLGlot** 30.31 | Tokeniser + AST for the security gate, column qualification, dialect transpilation, complexity |
@@ -160,7 +188,7 @@ Every other setting has a safe default and is documented in `.env.example`. The 
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `QB_MODEL` | `gemini-3.8-flash` | Gemini model for generation and correction (`QB_VERIFIER_MODEL` for the reviewer) |
+| `QB_MODEL` | `gemini-3.5-flash-lite` | Gemini model for generation and correction (`QB_VERIFIER_MODEL` for the reviewer) |
 | `QB_GENERATION_EFFORT` | `medium` | Effort per stage (`low` … `max`) |
 | `QB_DATABASE_URL` | demo DB | `sqlite:///path.db`, or `postgresql+psycopg://…` / `mysql+pymysql://…` (experimental) |
 | `QB_MAX_CORRECTION_ATTEMPTS` | `2` | Correction budget (values above 3 are rejected) |
@@ -330,7 +358,18 @@ The report also gives the false-refusal rate, overall behaviour accuracy, per-ca
 
 ## 13. Results
 
-> **The live comparison has not been run in the build environment.** No API key was available there, and no numbers are invented. Run it yourself:
+**Milestone 2 measurement (22 Nov 2026, `gemini-3.5-flash-lite`).** 14 test inputs (7 normal, 5 edge, 2 invalid; listed in
+[`test-data/`](test-data/)) were run through every prompt version with the real pipeline:
+
+| Version | Configuration | Tests passed | Notes |
+|---|---|---|---|
+| v1 | A: basic prompt | 5/14 | invented table/column names in 9 tests |
+| v2 | B: role + rules + schema | 14/14 | |
+| v3 | D: + few-shot examples | 13/14 | answered the ambiguous T9 with an assumption instead of asking |
+| v4 (final) | C: + reviewer and repair | 14/14 | 2 AI calls per question; the reviewer approved all 12 queries, so no repair was needed |
+
+This is a small set, so it cannot separate v2, v3 and v4 reliably. The full 48-question comparison has not been run yet
+(free-tier daily limits). Run it yourself:
 
 ```bash
 python -m evaluation.baseline_comparison --estimate
@@ -388,7 +427,7 @@ What is covered:
 
 ## 15. Limitations
 
-* **Accuracy figures are pending a live run** (see §13).
+* Accuracy has been measured on 14 test inputs only (see §13); the full 48-question comparison is still to be run.
 * PostgreSQL/MySQL support is implemented but **untested** here, so it is marked experimental.
 * Schema retrieval is lexical (no embeddings); synonyms come from the data dictionary or a small built-in business vocabulary.
 * The LLM reviewer can be wrong. Its concerns trigger correction only within the budget; after that the result is shown with a warning.
