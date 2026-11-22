@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Secrets – never commit real credentials
+.env
+
+# Generated databases & logs
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+data/uploads/
+logs/
+
+# Test / coverage artefacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Evaluation scratch output (summaries/charts in evaluation/results/ ARE committed)
+evaluation/results/tmp/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+
+# browser walkthrough output
+tests/browser/screenshots/

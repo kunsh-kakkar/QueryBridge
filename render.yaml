@@ -1,0 +1,21 @@
+# Render Blueprint: QueryBridge as one free Render web service (the page and the Python backend).
+# In the Render dashboard: New > Blueprint, pick this repository, paste your Gemini API key
+# when asked, then Deploy Blueprint. Details: "Deploying to Render" in README.md.
+services:
+  - type: web
+    name: querybridge
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py --host 0.0.0.0 --no-browser
+    envVars:
+      # Asked for when the Blueprint is created; it is stored by Render, never in this repository.
+      - key: GEMINI_API_KEY
+        sync: false
+      # Public website: connecting another database from the browser is turned off.
+      - key: QB_HOSTED
+        value: "true"
+      - key: QB_MODEL
+        value: gemini-3.6-flash
+      - key: PORT
+        value: "10000"

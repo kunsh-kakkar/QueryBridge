@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" role="img" aria-label="QueryBridge">
+  <rect x="4" y="4" width="32" height="32" rx="8" fill="#2a78d6"/>
+  <path d="M11 24c3.5-7 14.5-7 18 0" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M11 24h18M15 24v4M25 24v4" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

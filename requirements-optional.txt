@@ -1,0 +1,7 @@
+# QueryBridge – optional database drivers (EXPERIMENTAL dialect support)
+# SQLite needs no extra driver. Install these only to connect PostgreSQL/MySQL:
+#   pip install -r requirements-optional.txt
+-r requirements.txt
+
+psycopg[binary]==3.3.9      # PostgreSQL  ->  postgresql+psycopg://user:pass@host:5432/db
+PyMySQL==1.2.4              # MySQL       ->  mysql+pymysql://user:pass@host:3306/db

@@ -1,0 +1,8 @@
+# Lint rules used for QueryBridge: pyflakes (F), syntax errors (E9), likely bugs (B),
+# and pylint errors (PLE) – including invisible / bidi control characters in source.
+exclude = [".venv", "data", "evaluation/results"]
+line-length = 120
+
+[lint]
+select = ["F", "E9", "B", "PLE"]
+ignore = ["B008", "B904", "B905"]

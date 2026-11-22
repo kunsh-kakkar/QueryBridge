@@ -1,0 +1,7 @@
+# QueryBridge – development & testing dependencies
+-r requirements.txt
+
+pytest==9.2.0
+pytest-cov==7.1.0
+httpx==0.28.1               # FastAPI TestClient (web API tests)
+ruff==0.14.5                # lint: `ruff check .` (rules in ruff.toml)

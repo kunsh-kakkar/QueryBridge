@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="40" viewBox="0 0 200 40" role="img" aria-label="QueryBridge">
+  <rect x="2" y="4" width="32" height="32" rx="8" fill="#2a78d6"/>
+  <path d="M9 24c3.5-7 14.5-7 18 0" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M9 24h18M13 24v4M23 24v4" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="44" y="27" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="19" font-weight="700" fill="#2a78d6">QueryBridge</text>
+</svg>

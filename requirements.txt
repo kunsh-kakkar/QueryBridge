@@ -1,0 +1,23 @@
+# QueryBridge – runtime dependencies
+# Exact pins: this set was installed together and verified on Python 3.13
+# (`pip check` clean, all imports succeed). Upgrade deliberately, re-run tests.
+
+# --- AI -------------------------------------------------------------------
+google-genai==3.6.1         # Official Gemini SDK (has a free tier)
+
+# --- Data validation & configuration -------------------------------------
+pydantic==2.14.3
+pydantic-settings==2.16.3   # typed settings from environment / .env
+
+# --- Database & SQL -------------------------------------------------------
+SQLAlchemy==2.1.8           # connectivity + schema inspection
+sqlglot==30.31.0            # SQL parsing, AST safety checks, dialect transpilation
+
+# --- Web interface ---------------------------------------------------------
+fastapi==0.165.0            # JSON API behind the HTML/CSS/JavaScript interface
+uvicorn==0.54.0             # local web server (python app.py)
+python-multipart==0.0.34    # file uploads (connect a SQLite file)
+
+# --- Analytics -------------------------------------------------------------
+plotly==7.1.0               # charts (the browser loads the bundled plotly.min.js)
+pandas==3.1.1
