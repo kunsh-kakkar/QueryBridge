@@ -22,9 +22,8 @@
 * Show the **plain-language answer** at the top, then the **Table** tab (sort a column, filter, Download CSV) and the **SQL** tab (copy; switch to the PostgreSQL view).
 * **How I got this:** the tables, filters, calculations and assumptions, plus the confidence explained in words. These are user-facing explanations, not hidden reasoning.
 
-## 3. Prompt engineering made visible (2 min) · Behind the scenes, then Prompt lab
+## 3. Prompt engineering made visible (2 min) · Prompt lab
 
-* **Behind the scenes:** each step with timings; the AI calls with tokens and **cached** tokens (the stable system prefix is reused across questions); the automatic checks; the AI reviewer's verdict; the `EXPLAIN` query plan; and the exact prompts, section by section (role, rules, dialect, schema, few-shot, context, question).
 * Open **Settings → Prompt lab**, switch the configuration **A → B → D → C** and watch the prompt grow from about 60 to about 4,200 tokens. Under *Worked examples chosen*: "examples come from a *different* (bookstore) schema and are chosen by SQL pattern. Here, top-N."
 * Type "Which employees earn more than their manager?" and show that the self-join example is picked.
 
@@ -40,7 +39,7 @@
 
 ## 6. Safety (1.5 min)
 
-* Ask **"Delete all sales from 2023."**: refused immediately, *with no AI call at all* (Behind the scenes says "No AI model was used").
+* Ask **"Delete all sales from 2023."**: refused immediately, *with no AI call at all*.
 * Open **Explain SQL**, paste `SELECT 1; DROP TABLE employees` and click **Run it**: *Blocked for safety*. **Check safety only** gives the same verdict without running anything.
 * Mention the layers: validator AST checks, then the database opened read-only with an authorizer, then a timeout and row cap. The red-team suite blocks 63/63 attacks, and the evaluation proves the database fingerprint is unchanged. **Settings → About & safety** lists the same points in plain words.
 
@@ -63,4 +62,4 @@
 | "What if the model is wrong?" | Static checks and an EXPLAIN dry run catch invalid SQL; an independent reviewer checks intent; at most 2 corrections; the confidence and assumptions show the uncertainty. |
 | "Does it work on other databases?" | Any SQLite file (Settings → Database → upload). PostgreSQL/MySQL adapters exist but are experimental. |
 | "Could another website on my computer use it?" | No. It only answers requests from its own page: other Host names are rejected, state-changing requests need a custom header, and a strict Content-Security-Policy is set. |
-| "How much does a question cost?" | Typically 2 calls in configuration C (generate + review); Behind the scenes shows tokens, cache hits and cost. |
+| "How much does a question cost?" | Typically 2 calls in configuration C (generate + review); the Settings page shows the tokens and estimated cost used so far. |

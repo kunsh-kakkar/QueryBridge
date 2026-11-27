@@ -59,9 +59,6 @@ const SCALE = Number(process.env.QB_SCALE || 1);
   await shot(page, "05-how");
   await page.click(".answer >> nth=0 >> role=tab[name='SQL']");
   await shot(page, "06-sql");
-  await page.click(".answer >> nth=0 >> role=tab[name='Behind the scenes']");
-  await page.waitForSelector(".answer .tab-panel:not([hidden]) table.plain", { timeout: 10000 });
-  await shot(page, "07-behind", true);
 
   // clarification
   await page.fill(".ask-box textarea", "Show me the highest-performing employees");

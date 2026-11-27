@@ -229,7 +229,7 @@ def result_json(result: PipelineResult, result_id: str, *, dialect: str) -> dict
 
 
 def details_json(result: PipelineResult) -> dict[str, Any]:
-    """The 'behind the scenes' view: every step, prompt, model call and check."""
+    """Full details of one answer (API only): every step, prompt, model call and check."""
     verification = None
     if result.verification is not None:
         v = result.verification

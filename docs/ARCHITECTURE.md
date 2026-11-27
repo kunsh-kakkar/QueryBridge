@@ -386,8 +386,7 @@ the server calls the same `QueryPipeline` the evaluator uses.
 **Request flow.** The browser sends JSON to `/api/...`. `POST /api/ask` runs the pipeline in a worker
 thread and streams newline-delimited JSON: one `step` event per pipeline stage (shown live as a
 progress list), then one `result` (or `error`) event. Charts are rendered on demand
-(`/api/results/{id}/chart`, Plotly JSON from the same `build_figure` as before) and the
-*Behind the scenes* detail is fetched only when opened.
+(`/api/results/{id}/chart`, Plotly JSON from the same `build_figure` as before).
 
 **State.** `AppState` holds one connected database, its inspected schema, the pipeline and the
 history store, and switches databases under a lock. Each browser tab has a random session id

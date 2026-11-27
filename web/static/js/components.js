@@ -2,8 +2,7 @@
 
 import { api } from "./api.js";
 import {
-  clear, debounce, formatCell, formatCost, formatDuration, formatNumber, h, humanize, icon, isDarkTheme,
-  plural, uniqueId,
+  clear, debounce, formatCell, formatDuration, formatNumber, h, humanize, icon, isDarkTheme, plural, uniqueId,
 } from "./dom.js";
 
 // ------------------------------------------------------------------ small pieces
@@ -447,8 +446,7 @@ export function sqlPanel(result, { onExplain } = {}) {
   return wrap;
 }
 
-// ------------------------------------------------------------------ behind the scenes
-const STEP_TONES = { ok: "good", warning: "warn", failed: "bad", skipped: "neutral" };
+// ------------------------------------------------------------------ prompt view
 
 function plainTable(headers, rows, numeric = []) {
   return h("div", { class: "table-wrap" }, h("table", { class: "plain" },
@@ -475,64 +473,6 @@ export function promptView(prompt) {
       h("div", { class: "prompt-text" }, h("p", { class: "small muted", text: s.technique }), codeBlock(s.text))));
   }
   wrap.append(sections);
-  return wrap;
-}
-
-export function detailsPanel(resultId) {
-  const wrap = h("div", null, h("div", { class: "skeleton", style: { height: "120px" } }));
-  api(`/api/results/${encodeURIComponent(resultId)}/details`).then((d) => {
-    clear(wrap);
-    wrap.append(h("p", { class: "small muted", text: "Everything QueryBridge did to produce this answer, for the curious. Nothing here is needed to use the answer." }));
-    wrap.append(h("h4", { text: `Steps (${formatDuration(d.total_ms)} in total)` }),
-      plainTable(["Step", "Result", "Time", "Detail"],
-        d.steps.map((s) => [s.name, pill(s.status, STEP_TONES[s.status] || "neutral"), formatDuration(s.duration_ms), s.detail]), [2]));
-    if (d.llm_calls.length) {
-      const priced = d.llm_calls.filter((c) => c.estimated_cost_usd !== null && c.estimated_cost_usd !== undefined);
-      const cost = priced.reduce((sum, c) => sum + c.estimated_cost_usd, 0);
-      const costText = priced.length ? `, about ${formatCost(cost)}` : "";
-      wrap.append(h("h4", { style: { marginTop: "18px" }, text: `AI calls (${d.llm_calls.length}${costText})` }),
-        plainTable(["Stage", "Model", "Input tokens", "Cached", "Output tokens", "Time"],
-          d.llm_calls.map((c) => [c.stage, c.model + (c.fallback_used ? " (fallback)" : ""), formatNumber(c.input_tokens),
-            formatNumber(c.cache_read_tokens), formatNumber(c.output_tokens), formatDuration(c.latency_ms)]), [2, 3, 4, 5]));
-    } else {
-      wrap.append(h("p", { class: "muted small", style: { marginTop: "12px" }, text: "No AI model was used for this answer." }));
-    }
-    if (d.verification) {
-      const v = d.verification;
-      const checks = h("ul", { class: "links-list" }, v.checks.map((c) => h("li", null,
-        icon(c.passed ? "checkCircle" : "alert", { label: c.passed ? "passed" : c.severity }),
-        h("span", null, h("strong", { text: `${humanize(c.name)}: ` }), c.message))));
-      wrap.append(h("h4", { style: { marginTop: "18px" }, text: "Automatic checks" }), checks);
-      if (v.semantic) {
-        wrap.append(callout(v.semantic.blocking ? "warn" : "good", "sparkle",
-          h("p", null, h("strong", { text: "AI reviewer: " }),
-            `${v.semantic.blocking ? "found problems" : "no blocking problems"} (${Math.round(v.semantic.confidence * 100)}% sure). `,
-            v.semantic.summary),
-          v.semantic.issues.length ? list(v.semantic.issues.map((i) => `${i.severity} · ${i.category}: ${i.description}`)) : null));
-      } else if (v.semantic_skipped_reason) {
-        wrap.append(h("p", { class: "muted small", text: `AI reviewer skipped: ${v.semantic_skipped_reason}` }));
-      }
-      if (v.explain_plan.length) {
-        wrap.append(disclosure("Database query plan (EXPLAIN QUERY PLAN)", h("pre", { class: "json", text: v.explain_plan.join("\n") })));
-      }
-    }
-    if (d.attempts.length > 1) {
-      wrap.append(h("h4", { style: { marginTop: "18px" }, text: "Attempts (automatic corrections)" }),
-        plainTable(["#", "Source", "Outcome", "Problem"],
-          d.attempts.map((a) => [String(a.number), a.source, a.outcome.replace(/_/g, " "), a.problems[0] || ""])));
-    }
-    if (d.schema_context) {
-      wrap.append(h("p", { class: "small muted", style: { marginTop: "12px" } },
-        `Schema sent to the AI: ${d.schema_context.mode} (${d.schema_context.tables.join(", ")}).`));
-    }
-    if (d.prompts.length) {
-      const prompts = h("div", { style: { marginTop: "18px" } }, h("h4", { text: "Prompts sent to the AI model" }));
-      d.prompts.forEach((p, i) => prompts.append(disclosure(`${i + 1}. ${humanize(p.stage)} prompt (≈ ${formatNumber(p.token_estimate)} tokens)`, promptView(p))));
-      wrap.append(prompts);
-    }
-  }).catch((e) => {
-    clear(wrap).append(callout("bad", "alert", h("p", { text: e.message })));
-  });
   return wrap;
 }
 
@@ -584,7 +524,7 @@ export function answerCard(result, { showQuestion = true, onClarify, onExplain, 
   }
   if (result.explanation && result.ok) defs.push({ id: "how", label: "How I got this", iconName: "book", render: (p) => p.append(explanationPanel(result)) });
   if (result.sql) defs.push({ id: "sql", label: "SQL", iconName: "code", render: (p) => p.append(sqlPanel(result, { onExplain })) });
-  defs.push({ id: "details", label: "Behind the scenes", iconName: "layers", render: (p) => p.append(detailsPanel(result.id)) });
+  if (!defs.length) return card; // e.g. a refusal or a clarifying question: nothing to show in tabs
   const tabset = tabs(defs);
   card.append(tabset);
   // a chart drawn while its tab was hidden is redrawn when shown after a theme change

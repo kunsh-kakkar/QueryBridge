@@ -2,6 +2,10 @@
 
 Dated list of changes since Milestone 1 (newest first).
 
+## 2026-11-27
+
+- Removed the *Behind the scenes* tab from answers, to keep the answer view simple. Each answer now has the Table, Chart, How I got this and SQL tabs; the exact prompt for any question is still shown in Settings → Prompt Lab.
+
 ## 2026-11-22 (Milestone 2 submission)
 
 - Switched the language model to **Google Gemini** on the free Gemini API tier (`backend/gemini_client.py`). Gemini 3.8 Flash returned "high demand" (503) and timeout (504) errors; Gemini 3.6 Flash worked (about 24 s per question) but its free daily limit ran out during testing; the final model is **Gemini 3.5 Flash-Lite** (about 8 s per question).

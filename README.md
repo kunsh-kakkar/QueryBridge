@@ -83,7 +83,7 @@ QueryBridge addresses each of these with prompt engineering, plus deterministic 
 | **Conversation** | Follow-ups ("now sort them by department") rewrite the previous query; ambiguous questions ask for **clarification** with option buttons |
 | **History** | Every question, its SQL, status and cost signals; re-run (validated again), ask again, delete, clear |
 | **Visual analytics** | Recommended Plotly charts (ranked bar, line/area, grouped bar, scatter, histogram, stat tile) with a chart-type and measure chooser; CSV export; light and dark mode |
-| **Transparency** | A *Behind the scenes* view per answer: pipeline steps, LLM calls with tokens, cache hits and cost, verification checks, the query plan, and the exact prompt sent. A **Prompt lab** inspects any prompt without an API call |
+| **Transparency** | A **Prompt lab** inspects any prompt without an API call |
 | **Interface for first-time users** | A plain HTML/CSS/JavaScript web app: a welcome guide, clickable example questions, live progress while a question is answered, the plain-language answer first with the technical detail one click away, a guided *Your data* page with a relationship map, light and dark themes, a phone layout, and keyboard and screen-reader support |
 | **Evaluation** | 48-question dataset; A/B/D/C comparison with six metric families and reports |
 
@@ -133,7 +133,7 @@ Question
  → SQLVerifier           static + EXPLAIN + LLM review ──┐
  → SQLExecutor           read-only, timeout, row cap ────┤ failure → SQLCorrector (≤ 2 attempts)
  → ResultFormatter · ChartRecommender · ComplexityAnalyzer · composite confidence
- → HistoryStore + memory → web API → browser (answer, table, chart, how I got this, SQL, behind the scenes)
+ → HistoryStore + memory → web API → browser (answer, table, chart, how I got this, SQL)
 ```
 
 With default settings one question costs **at most 5 LLM calls**: generate → review → correct → review → correct. A test proves this bound.
@@ -221,7 +221,7 @@ Your browser opens at http://127.0.0.1:8501 (use `--port 8600` for another port,
 
 | Page | What it is for |
 |---|---|
-| **Ask a question** | Type a question (Enter to send). Each answer shows the plain-language result first, then tabs: **Table** (filter, sort, pages, CSV), **Chart**, **How I got this** (tables, filters, calculations, assumptions, confidence), **SQL** (copy; PostgreSQL/MySQL translations for reference) and **Behind the scenes** (steps, AI calls, checks, prompts). Ambiguous questions get option buttons. Follow-ups build on the previous answer |
+| **Ask a question** | Type a question (Enter to send). Each answer shows the plain-language result first, then tabs: **Table** (filter, sort, pages, CSV), **Chart**, **How I got this** (tables, filters, calculations, assumptions, confidence) and **SQL** (copy; PostgreSQL/MySQL translations for reference). Ambiguous questions get option buttons. Follow-ups build on the previous answer |
 | **Your data** | Every table explained: what each column means, example values, how tables connect (with a clickable map), 10 example rows, and an “Ask about this table” shortcut |
 | **History** | Every question with its SQL; *Run again* (no AI call), *Ask again*, delete, clear |
 | **Explain SQL** | Paste any SQL: a safety verdict, a step-by-step explanation, and *Run it* only on request |
